@@ -1,17 +1,17 @@
-<?php?>
+<?php ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Змейка</title>
 	<meta charset="utf-8">
-	<script type="text/javascript" src="jquery/jquery.js"></script>
-		<script type="text/javascript" src="jquery/jquery-ui.js"></script>
 	<link type="text/css" href="jquery/jquery-ui.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css" type="text/css" >
+	<script type="text/javascript" src="jquery/jquery.js"></script>
+	<script type="text/javascript" src="jquery/jquery-ui.js"></script>
+	<script language="javascript" src="js/nameSpace.js"></script>
 	<script language="javascript" src="js/game.js"></script>
 	<script language="javascript" src="js/matrix.js"></script>
 	<script language="javascript" src="js/snake.js"></script>
-	<script language="javascript" src="js/print_r.js"></script>
-	<link rel="stylesheet" href="css/style.css" type="text/css" >
 	<script language="javascript" src="js/onload.js"></script>
 </head>
 <body>

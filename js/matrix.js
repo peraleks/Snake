@@ -1,19 +1,29 @@
-function Matrix(containerId, rows, cols)
-{
-	var that = this;
-	this.containerId = containerId;
-	this.rows = rows;
-	this.cols = cols;
-	this.matrix = $('#' + this.containerId);
-	this.angle = 0;
-	this.scale = '';
+APP.namespace('Matrix');
 
+APP.Matrix = function (containerId, rows, cols) {
+
+    this.containerId = containerId;
+    this.rows = rows;
+    this.cols = cols;
+    this.matrix = $('#' + this.containerId);
+    this.angle = 0;
+    this.scale = '';
+
+	/**
+	 * Вычисляет порядковый номер элемента div матрицы
+	 *
+	 * @param row    - строка
+	 * @param col    - столбец
+	 * @returns {number} - номер элемента
+	 */
 	this.namber = function (row, col)
 	{
 		return (col + ((row - 1) * 20) - 1);
 	}
 
-	/******************* создание матрицы *********************/
+	/**
+	 * Создает матрицу
+	 */
 	this.create = function ()
 	{
 		var matrix = document.getElementById(this.containerId);
@@ -26,31 +36,39 @@ function Matrix(containerId, rows, cols)
 			matrix.appendChild(div);
 		}
 	}
-	/*^^^^^^^^^^^^^^^^^^ создание матрицы ^^^^^^^^^^^^^^^^^^^^*/
 
 
-
-	/******************* Обнуление матрицы *********************/
+	/**
+	 * Обнуляет матрицу
+	 */
 	this.clean = function ()
 	{
 		this.matrix.find("div[class != 'cell']").attr('class', 'cell').html('');
 	}
-	/*^^^^^^^^^^^^^^^^^^ Обнуление матрицы ^^^^^^^^^^^^^^^^^^^^*/
 
 
-
-	/******************* Чтение ячейки матрицы *********************/
+	/**
+	 * Чтение ячейки матрицы
+	 * 
+	 * @param row		- строка
+	 * @param col		- столбец
+	 * @returns {string} - css класс
+     */
 	this.getCell = function (row, col)
 	{
 		return (document.getElementById(this.containerId).
 				children[this.namber(row, col)].
 				className);
 	}
-	/*^^^^^^^^^^^^^^^^^^ Чтение ячейки матрицы ^^^^^^^^^^^^^^^^^^^^*/
 
 
-
-	/******************* Установка ячейки матрицы *********************/
+	/**
+	 * Изменение ячейки матрицы
+	 * 
+	 * @param row	- строка
+	 * @param col	- столбец
+	 * @param val	- css класс
+     */
 	this.setCell = function (row, col, val)
 	{
 		var cell = this.matrix.find('div').eq(this.namber(row, col));
@@ -100,38 +118,40 @@ function Matrix(containerId, rows, cols)
 		setTimeout(function(){cell.append('<img class="shadow" src="img/shadow.png">');}, 250);
 		setClass();
 
+		/**
+		 * Назначает css класс
+		 */
 		function setClass()
 		{
 			cell.attr('class', val);
 		}
 	}
-	/*^^^^^^^^^^^^^^^^^^ Установка ячейки матрицы ^^^^^^^^^^^^^^^^^^^^*/
 
 
-
-	/******************* Отгрызание хвоста *********************/
+	/**
+	 * Реализует отгрызание хвоста
+	 */
 	this.tail = function()
 	{
 		var tail = this.matrix.find('.red');
 		this.i = 0;
-		var that = this;
+		var self = this;
 
 		Red();
 
 		function Fade(){
 			tail.fadeTo(50, 1);
-			that.i++
+			self.i++;
 			setTimeout(Red, 100);
 		}
 		function Red(){
-			if (that.i > 7){
+			if (self.i > 7){
 				tail.attr('class', 'cell');
 				return;
 			}
 			tail.fadeTo(50, 0);
-			that.i++
+			self.i++;
 			setTimeout(Fade, 100);
 		}
 	}
-	/*^^^^^^^^^^^^^^^^^^ Отгрызание хвоста ^^^^^^^^^^^^^^^^^^^^*/
-}
+};

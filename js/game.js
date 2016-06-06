@@ -1,14 +1,17 @@
-function Game()
+APP.namespace('Game');
+
+APP.Game = function ()
 {
 	var self = this;
-	this.m = new Matrix('matrix', 20, 20);
-	this.m.create();
+	this.matrix = new APP.Matrix('matrix', 20, 20);
+	this.matrix.create();
 	this.key = new Key();
 	this.start = false;
 	var divSnake = $('#snake');
 	setTimeout(Begining, 1000);
 	this.name = '';
 	this.snakeEat = 0;
+    this.score = 0;
 	this.t = 0;
 
 	function Begining()
@@ -58,7 +61,7 @@ function Game()
 		setTimeout(nameInput, 300);
 		function nameInput()
 		{
-			Message('Ваше имя:<br><input type="text" maxlength="9">')
+			Message('Ваше имя:<br><input type="text" maxlength="9">');
 			var input = divSnake.find('#message input');
 			var last_input = '';
 			input.focus();
@@ -87,74 +90,74 @@ function Game()
 				Message();
 				self.start = true;
 				self.gameplay();
-			})
+			});
 			yes.click(function(){
 				Message();
-				self.m.clean();
+				self.matrix.clean();
 				self.Ajax('set');
 				Begining();
 			})
 
-	}
+	};
 
 
 	this.newGame = function ()
 	{
-		self.m.clean();
+		self.matrix.clean();
 		switch(self.level)
 		{
 			case 1:
 				self.score_level = 300;
 				self.speed = 200;
 				self.time = 250;
-				fruit(self.m, 'bank', 1);
-				fruit(self.m, 'meat', 1);
-				fruit(self.m, 'lemon', 1);
-				fruit(self.m, 'nut', 1);
-				fruit(self.m, 'strawberry', 1);
-				fruit(self.m, 'apple', 1);
+				fruit(self.matrix, 'bank', 1);
+				fruit(self.matrix, 'meat', 1);
+				fruit(self.matrix, 'lemon', 1);
+				fruit(self.matrix, 'nut', 1);
+				fruit(self.matrix, 'strawberry', 1);
+				fruit(self.matrix, 'apple', 1);
 			break;
 			case 2:
 				self.score_level = 700;
 				self.speed = 200;
 				self.time = 400;
-				fruit(self.m, 'bank', 2);
-				fruit(self.m, 'meat', 2);
-				fruit(self.m, 'lemon', 2);
-				fruit(self.m, 'nut', 1);
-				fruit(self.m, 'strawberry', 1);
-				fruit(self.m, 'apple', 1);
+				fruit(self.matrix, 'bank', 2);
+				fruit(self.matrix, 'meat', 2);
+				fruit(self.matrix, 'lemon', 2);
+				fruit(self.matrix, 'nut', 1);
+				fruit(self.matrix, 'strawberry', 1);
+				fruit(self.matrix, 'apple', 1);
 			break;
 			case 3:
 				self.score_level = 1200;
 				self.speed = 180;
 				self.time = 800;
-				fruit(self.m, 'bank', 4);
-				fruit(self.m, 'meat', 4);
-				fruit(self.m, 'lemon', 2);
-				fruit(self.m, 'nut', 2);
-				fruit(self.m, 'strawberry', 2);
-				fruit(self.m, 'apple', 1);
+				fruit(self.matrix, 'bank', 4);
+				fruit(self.matrix, 'meat', 4);
+				fruit(self.matrix, 'lemon', 2);
+				fruit(self.matrix, 'nut', 2);
+				fruit(self.matrix, 'strawberry', 2);
+				fruit(self.matrix, 'apple', 1);
 			break;
 			case 4:
 				self.score_level = 1000;
 				self.speed = 150;
 				self.time = 1000;
-				fruit(self.m, 'bank', 20);
-				fruit(self.m, 'meat', 11);
-				fruit(self.m, 'apple', 1);
+				fruit(self.matrix, 'bank', 20);
+				fruit(self.matrix, 'meat', 11);
+				fruit(self.matrix, 'apple', 1);
 			break;
 			case 5:
 				self.score_level = 1200;
 				self.speed = 50;
 				self.time = 15000;
-				fruit(self.m, 'bank', 3);
-				fruit(self.m, 'apple', 1);
+				fruit(self.matrix, 'bank', 3);
+				fruit(self.matrix, 'apple', 1);
 			break;
 		}
 		
 		self.timePer = self.time/100;
-		self.snake = new Snake(self.m, Random(), Random(), 'right');
+		self.snake = new APP.Snake(self.matrix, random(), random(), 'right');
 		self.snake.create();
 		self.start = true;
 		self.snakeEat = 0;
@@ -162,7 +165,7 @@ function Game()
 		Score();
 		divSnake.find('#time_c').animate({width: --self.time/self.timePer + '%'}, 300);
 		self.gameplay();
-	}
+	};
 	
 
 
@@ -171,7 +174,6 @@ function Game()
 	{
 		if (self.time < 0)
 		{
-			// var t;
 			Score();
 			self.totalScore += self.score;
 			self.Ajax('set');
@@ -209,7 +211,7 @@ function Game()
 		{
 			Score();
 			self.snake.tail = false;
-			self.m.tail();
+			self.matrix.tail();
 			setTimeout(self.gameplay, 1500);
 			return;
 		}
@@ -233,7 +235,7 @@ function Game()
 			}
 
 			Score();
-			fruit(self.m, self.snake.eated, 1);
+			fruit(self.matrix, self.snake.eated, 1);
 			self.snake.eated = false;
 		}
 
@@ -248,7 +250,7 @@ function Game()
 			self.message = 'pause';
 			Message('Продолжить');
 		}
-	}
+	};
 
 
 	function Score()
@@ -266,8 +268,8 @@ function Game()
 		for(var i = 0; i < item; i++)
 		{
 			do{
-			var row = Random();
-			var col = Random();
+			var row = random();
+			var col = random();
 			}
 			while (matrix.getCell(row, col) != 'cell');
 
@@ -276,7 +278,7 @@ function Game()
 
 	}
 
-	function Random()
+	function random()
 	{
 		var max = 20;
 		var min = 1;
@@ -365,9 +367,8 @@ function Game()
 
 			divSnake.find('#score_mes').html(h);
 			center();
-			// return;
 		}
-	}
+	};
 
 	function Winner()
 	{
@@ -377,7 +378,7 @@ function Game()
 
 		for(i = 0; i < 380; i++)
 		{
-			setTimeout(function(){fruit(self.m, 'apple', 1);}, i * 100);
+			setTimeout(function(){fruit(self.matrix, 'apple', 1);}, i * 100);
 		}
 		setTimeout(function(){
 			Message(self.name +',<br>вы победили!<br>Ваш рекорд:<br>'+ self.totalScore);
@@ -386,4 +387,4 @@ function Game()
 		setTimeout(Message, 10000);
 		setTimeout(Begining, 10300);
 	}
-}
+};
